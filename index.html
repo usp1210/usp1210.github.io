@@ -189,6 +189,7 @@ kf=[[3,3.3717089216941,4.96827542350066,11.46022178743,5.78807355723034,9.788752
 function checkvalid(vec){return vec[0]==dat1}
 kk=kf.filter(checkvalid)[0]
 
+t0= "For a sample with a sample size of "+ dat1 +", \n a sample mean of " + dat3 +", \n and a standard deviation of " +dat4 + ", \n";	
 t1= "90% Prediction Interval: (" + rd((dat3-kk[1]*dat4),dat2) +" ,"+ rd((dat3+kk[1]*dat4),dat2)+")\n";
 t2= "95% Prediction Interval: (" + rd((dat3-kk[2]*dat4),dat2) +" ,"+ rd((dat3+kk[2]*dat4),dat2)+")\n";
 t3= "99% Prediction Interval: (" + rd((dat3-kk[3]*dat4),dat2) +" ,"+ rd((dat3+kk[3]*dat4),dat2)+")\n";
@@ -196,7 +197,7 @@ t4= "90%/90% Tolerance Interval: (" + rd((dat3-kk[4]*dat4),dat2) +" ,"+ rd((dat3
 t5= "95%/95% Tolerance Interval: (" + rd((dat3-kk[5]*dat4),dat2) +" ,"+ rd((dat3+kk[5]*dat4),dat2)+")\n";
 t6= "99%/99% Tolerance Interval: (" + rd((dat3-kk[6]*dat4),dat2) +" ,"+ rd((dat3+kk[6]*dat4),dat2)+")\n";
 
- document.getElementById("result").innerText = "Two-sided Prediction/Tolerance Intervals:\n"+t1+t2+t3+t4+t5+t6;}
+ document.getElementById("result").innerText = t0+ "the two-sided Prediction/Tolerance Intervals are below:\n"+t1+t2+t3+t4+t5+t6;}
 
    
     
