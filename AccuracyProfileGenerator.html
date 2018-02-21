@@ -1,11 +1,11 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
 
 <!-- saved from url=(0014)about:internet -->
 <!-- saved from url=(0064)http://www.flotcharts.org/flot/examples/basic-options/index.html -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-	<title>Flot Examples: Basic Options</title>
+	<title>Accuracy Profile Generator [USP1210 Section 3.2]</title>
 	<link href="examples.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="https://percentagecalculator.net/stylesheets/percentagecalculator.css"/>
 	<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="excanvas.min.js"></script><![endif]-->
@@ -17,17 +17,29 @@
 function getdata(){
 
 var dat2 = parseFloat(document.querySelector('input[name="dat2"]:checked').value);  
+var dat7 = parseFloat(document.calcit.dat7.value);
+var dat8 = parseFloat(document.calcit.dat8.value);
 
+if (dat2==1)  document.getElementById("result").innerText = "Accuracy Profile (90% Prediction Interval)";
+if (dat2==2)  document.getElementById("result").innerText = "Accuracy Profile (95% Prediction Interval)";
+if (dat2==3)  document.getElementById("result").innerText = "Accuracy Profile (99% Prediction Interval)";
+if (dat2==4)  document.getElementById("result").innerText = "Accuracy Profile (90%/90% Tolerance Interval)";
+if (dat2==5)  document.getElementById("result").innerText = "Accuracy Profile (95%/95% Tolerance Interval)";
+if (dat2==6)  document.getElementById("result").innerText = "Accuracy Profile (99%/99% Tolerance Interval)";
+
+document.getElementById("xlabel").innerText = "Truth (Theoretical Values)";
+document.getElementById("ylabel").innerText = "Relative Error (%)";
 
 datin = document.calcit.DataEntry.value;
 vector=datin.replace(/,/g," ").replace(/\uFF0C/g, " ").replace(/\uFF64/g, " ").replace(/\u3001/g, " ").trim();
 vector=vector.replace(/\n/g, '],[').replace(/\r\n/g,'],[');   
 vector=vector.replace(/\s+/g, " ").replace(/\s/g, ','); 
 vector=eval("[[" + vector + "]]");  
+vector.sort(function(a, b){return a[1]-b[1]});
 
 if(datin=="") vector=
 [[12,	10,	9,	2 ],  
-[9,	20,	18,	4 ], 
+[9,	20,	18,	1 ], 
 [6,	30,	31,	2 ], 
 [24,	40,	42,	1 ], 
 [8,	50,	52,	3 ], 
@@ -130,29 +142,31 @@ kf=[[3,3.3717089216941,4.96827542350066,11.46022178743,5.78807355723034,9.788752
 
 var d1 = [];
 for (var i = 0; i < vector.length; i += 1) {
- d1.push([i, vector[i][2]*100/vector[i][1]]); }
+ d1.push([i, -100+vector[i][2]*100/vector[i][1]]); }
 
 
 var d2 = [];
 for (var i = 0; i < vector.length; i += 1) {
 function checkvalid(vec){return vec[0]==vector[i][0] }
-kk=kf.filter(checkvalid)[0][dat2]
- d2.push([i, (vector[i][2]-kk*vector[i][3])*100/vector[i][1]]); }
+kk=kf.filter(checkvalid)[0]
+[dat2]
+ d2.push([i, -100+(vector[i][2]-kk*vector[i][3])*100/vector[i][1]]); }
 
 var d3 = [];
 for (var i = 0; i < vector.length; i += 1) {
 function checkvalid(vec){return vec[0]==vector[i][0] }
-kk=kf.filter(checkvalid)[0][dat2]
- d3.push([i, (vector[i][2]+kk*vector[i][3])*100/vector[i][1]]); }
+kk=kf.filter(checkvalid)[0]
+[dat2]
+ d3.push([i, -100+(vector[i][2]+kk*vector[i][3])*100/vector[i][1]]); }
 
 		var d4 = [];
 		for (var i = 0; i < vector.length+2; i += 1) {
-			d4.push([i-1, 130]);
+			d4.push([i-1, dat8]);
 		}
 
 		var d5 = [];
 		for (var i = 0; i < vector.length+2; i += 1) {
-			d5.push([i-1, 70]);
+			d5.push([i-1, dat7]);
 		}
 
 	var d6 = [];
@@ -165,16 +179,19 @@ for (var i = 0; i < vector.length; i += 1) {
 
 		
 		$.plot("#placeholder", [
-			{ label: "", data: d1 },
-			{ label: "", data: d2 },
-			{ label: "", data: d3 },
-			{ label: "", data: d4 },
-			{ label: "", data: d5 }
+			{ color: 3, label: "", data: d1 },
+			{ color: 4, label: "", data: d2 },
+			{ color: 4, label: "", data: d3 },
+			{ color: 2, label: "", data: d4 },
+			{ color: 2, label: "", data: d5 }
 		], {
 			series: {
 				lines: { show: true },
 				points: { show: true }
+                                 
 			},
+
+
 			xaxis: {
 				ticks: d6,
 				min:-0.5,
@@ -182,8 +199,8 @@ for (var i = 0; i < vector.length; i += 1) {
 			},
 			yaxis: {
 				ticks: 10,
-				min: 0,
-				max: 200,
+				min: -100,
+				max: 100,
 				tickDecimals: 0
 			},
 			grid: {
@@ -207,7 +224,7 @@ for (var i = 0; i < vector.length; i += 1) {
 <body>
 
 	<div id="header">
-		<h2> Accuracy profile generator </h2>
+		<h2> Accuracy Profile Generator </h2>
 	</div>
 
 
@@ -218,47 +235,97 @@ for (var i = 0; i < vector.length; i += 1) {
 &nbsp; N &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Truth &nbsp;&nbsp; &nbsp; Mean &nbsp;&nbsp; &nbsp; SD
                <tr><td><div><textarea name="DataEntry" style="width:80%" rows="10" cols="40" placeholder=
 "12	10	9	2
-9	20	18	4
+9	20	18	1
 6	30	31	2
 24	40	42	1
 8	50	52	3
 24	60	63	5"></textarea></div></td></tr>
-    
+</table>    
+<table> 
+                <tr>
+                <td style="text-align:right;">Lower Limit (%):</td>
+                <td ><input name="dat7" type="number" value="-30"  </td>  
+               </tr><tr>
+                <td style="text-align:right;">Upper Limit (%):</td>
+                <td><input name="dat8" type="number" value="30" </td>  
+                </tr>
+</table> 
+<table> 
+
   <tr>  
            
 	        <td>
-                 <input type="radio" name="dat2"  value="1" checked> 90% Prediction Interval  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <input type="radio" name="dat2"  value="1" checked> 90% Prediction Interval <br>
                  <input type="radio" name="dat2"  value="2" > 95% Prediction Interval <br>
-                 <input type="radio" name="dat2"  value="3" > 99% Prediction Interval  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <input type="radio" name="dat2"  value="3" > 99% Prediction Interval  <br>
                  <input type="radio" name="dat2"  value="4" > 90%/90% Tolerance Interval <br>
-                 <input type="radio" name="dat2"  value="5" > 95%/95% Tolerance Interval &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <input type="radio" name="dat2"  value="5" > 95%/95% Tolerance Interval <br>
                  <input type="radio" name="dat2"  value="6" > 99%/99% Tolerance Interval <br>
 		</td>
             </tr></table>
 
     <table width="100%">
              <tr><td style="text-align: center">
-                <input onclick="getdata()" type="button" value="PlotIt" >
+                <input onclick="getdata()" type="button" value="Generate Accuracy Profile" >
                  </td>
               </tr>
               </table>
-	  
-	  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="https://usp1210.github.io"> Try TI/PI calculator for an individual record </a>
+
+
+
 </form>
 
 
-	<div id="content">
 
-		<div class="demo-container">
-			<div id="placeholder" class="demo-placeholder" style="padding: 0px; position: relative;"><canvas class="flot-base" width="1228" height="621" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 819px; height: 414px;"></canvas><div class="flot-text" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; font-size: smaller; color: rgb(84, 84, 84);"><div class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;"><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 163px; top: 395px; left: 32px; text-align: center;">0.0</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 163px; top: 395px; left: 224px; text-align: center;">π/2</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 163px; top: 395px; left: 422px; text-align: center;">π</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 163px; top: 395px; left: 606px; text-align: center;">3π/2</div></div><div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;"><div class="flot-tick-label tickLabel" style="position: absolute; top: 382px; left: 2px; text-align: right;">-2.000</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 334px; left: 2px; text-align: right;">-1.500</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 286px; left: 2px; text-align: right;">-1.000</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 239px; left: 2px; text-align: right;">-0.500</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 191px; left: 6px; text-align: right;">0.000</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 143px; left: 6px; text-align: right;">0.500</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 96px; left: 6px; text-align: right;">1.000</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 48px; left: 6px; text-align: right;">1.500</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 1px; left: 6px; text-align: right;">2.000</div></div></div><canvas class="flot-overlay" width="1228" height="621" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 819px; height: 414px;"></canvas><div class="legend"><div style="position: absolute; width: 63px; height: 69px; top: 14px; right: 17px; background-color: rgb(255, 255, 255); opacity: 0.85;"> </div><table style="position:absolute;top:14px;right:17px;;font-size:smaller;color:#545454"><tbody><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid rgb(237,194,64);overflow:hidden"></div></div></td>
+<div id="content">
 
-<td class="legendLabel"> </td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid rgb(175,216,248);overflow:hidden"></div></div></td>
 
-<td class="legendLabel"> </td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px">
-<div style="width:4px;height:0;border:5px solid rgb(203,75,75);overflow:hidden"></div></div></td>
+<table style="text-align:center">
+  <tr>
+    <td></td>
 
-<td class="legendLabel"> </td></tr></tbody></table></div></div>
-		</div>
-	</div>
+    <td>   <h3> <span id="result"  > </span></h3>    </td>
+
+    <td> </td>
+  </tr>
+
+  <tr>
+    <td> <h4> <span id="ylabel"  > </span></h4> </td>
+
+    <td>
+
+
+<div class="demo-container">
+<div id="placeholder" class="demo-placeholder" style="padding: 0px; position: relative;"> </div>
+</div>
+
+
+
+
+
+</td>
+
+    <td></td>
+  </tr>
+
+  <tr>
+   
+<td></td>
+    <td><h4> <span id="xlabel"  > </span></h4></td>
+<td></td>
+ 
+  </tr>
+
+</table>
+
+
+
+
+
+</div>
+
+   
+
+
 
 </body></html>
