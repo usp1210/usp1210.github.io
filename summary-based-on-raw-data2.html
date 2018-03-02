@@ -1095,7 +1095,7 @@ myTable+="<th class='r data'>Truth% (Truth="+dat0+")</td></th>";
 
 myTable+="<tr><td class='l data'>Mean </td>";
 myTable+="<td class='r data'>" + rd(dat3,dat2) + "</td>";
-myTable+="<td class='r data'>" + rd(dat3*100/dat0,dat2) + "%</td></tr>";
+myTable+="<td class='r data'>(" + rd(dat3*100/dat0,dat2) + "%)</td></tr>";
 
 myTable+="<tr><td class='l data'>90% CI of Mean </td>";
 myTable+="<td class='r data'>" + "(" + rd((dat3-kk[7]*dat4),dat2) +", "+ rd((dat3+kk[7]*dat4),dat2)+")" + "</td>";
@@ -1107,11 +1107,11 @@ myTable+="<td class='r data'>" + "(" + rd((dat3-kk[7]*dat4-dat0)*100/dat0,dat2) 
 
 myTable+="<tr><td class='l data'>StDev </td>";
 myTable+="<td class='r data'>" + rd(dat4,dat2) + "</td>";
-myTable+="<td class='r data'>" + rd(dat4*100/dat0,dat2) + "%</td></tr>";
+myTable+="<td class='r data'>(" + rd(dat4*100/dat0,dat2) + "%)</td></tr>";
 
 myTable+="<tr><td class='l data'>StDev (Upper 95%) </td>";
 myTable+="<td class='r data'>" + rd((kk[8]*dat4),dat2) + "</td>";
-myTable+="<td class='r data'>" + rd((kk[8]*dat4)*100/dat0,dat2) +"%" + "</td></tr>";
+myTable+="<td class='r data'>(" + rd((kk[8]*dat4)*100/dat0,dat2) +"%)" + "</td></tr>";
 
 myTable+="<tr><td class='l data'>90% Prediction Interval </td>";
 myTable+="<td class='r data'>" + "(" + rd((dat3-kk[1]*dat4),dat2) +", "+ rd((dat3+kk[1]*dat4),dat2)+")" + "</td>";
