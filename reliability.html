@@ -1,0 +1,84 @@
+<html> <body>
+
+ <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+
+    <script type="text/javascript">
+
+  function getr()
+           {
+       var N = parseFloat(document.calcit.dat1.value);
+       var k = parseFloat(document.calcit.dat2.value);
+       var covlo = parseFloat(document.calcit.dat3.value);
+       var covhi = parseFloat(document.calcit.dat4.value);
+       var nRuns = parseFloat(document.calcit.dat5.value);
+
+    var cov=new Array();
+
+    var reliability=0;
+
+    for (iRun=1; iRun<=nRuns; iRun++) {
+
+var z = new Array();
+for (var i=0; i<=N-1; i++) {        z[i]=  jStat.randn(0,1);              }
+var sampmean=jStat.mean(z);
+var sampsd=jStat.stdev(z);
+var lolimit=sampmean-k*sampsd;
+var hilimit=sampmean+k*sampsd;
+cov[i]=jStat.normal.cdf(hilimit,0,1)-jStat.normal.cdf(lolimit,0,1);
+if(cov[i]<=covhi && cov[i]>=covlo) reliability=reliability+1
+    }
+
+reliability=Math.round(reliability)/nRuns
+document.getElementById("result").innerText = "Reliability = " + reliability;
+}
+
+    </script>
+
+
+   <form name="calcit" onkeypress="return event.keyCode != 13;">
+
+
+            <div  >
+              <h1 style="text-align: center"> Reliability Calculator </h1>
+
+              <table width="100%">
+
+            <tr>
+            <td style="text-align: right">Sample Size (below 1000):</td>
+            <td><input name="dat1" type="number" </td>
+            </tr>
+
+            <tr>
+            <td style="text-align: right">K (2 or 3):</td>
+            <td><input name="dat2" type="number"  </td>
+            </tr>
+
+            <tr>
+            <td style="text-align: right">Lower Proximity Limit (such as 0.94):</td>
+            <td><input name="dat3" type="number"  </td>
+            </tr>
+
+            <tr>
+            <td style="text-align: right">Higher Proximity Limit (such as 0.96):</td>
+            <td><input name="dat4" type="number"  </td>
+            </tr>
+
+            <tr>
+            <td style="text-align: right">Number of Simulations (10000 or more):</td>
+            <td><input name="dat5" type="number"  </td>
+            </tr>
+
+<tr><td></td><td style="text-align: left"><input onclick="getr()" type="button" value="Calculate" ></td></tr>
+                          </table>
+
+<p style="text-align: center"> <span id="result"   > </span></p>
+            </div>
+          </form>
+
+
+
+
+
+
+    </body> </html>
+ 
