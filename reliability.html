@@ -3,7 +3,6 @@
  <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
 
     <script type="text/javascript">
-
   function getr()
            {
        var N = parseFloat(document.calcit.dat1.value);
@@ -11,13 +10,9 @@
        var covlo = parseFloat(document.calcit.dat3.value);
        var covhi = parseFloat(document.calcit.dat4.value);
        var nRuns = parseFloat(document.calcit.dat5.value);
-
     var cov=new Array();
-
     var reliability=0;
-
     for (iRun=1; iRun<=nRuns; iRun++) {
-
 var z = new Array();
 for (var i=0; i<=N-1; i++) {        z[i]=  jStat.randn(0,1);              }
 var sampmean=jStat.mean(z);
@@ -27,11 +22,16 @@ var hilimit=sampmean+k*sampsd;
 cov[i]=jStat.normal.cdf(hilimit,0,1)-jStat.normal.cdf(lolimit,0,1);
 if(cov[i]<=covhi && cov[i]>=covlo) reliability=reliability+1
     }
+reliability=Math.round(reliability)/nRuns;
 
-reliability=Math.round(reliability)/nRuns
-document.getElementById("result").innerText = "Reliability = " + reliability;
+document.getElementById("result").innerText = 
+"Assuming the population is Normally distributed, and the sample is a random sample. \n"+
+"For a sample size of " + N + ", we use [(sample mean) +/- "+ k +" * (sample st dev)] as the control range. \n"+
+"For each individual sample (1 simulation), we check whether the calculated control range covers \n"+
+"between "+ covlo +" and "+ covhi +" of the true population. After performing "+ nRuns +" simulations, \n"+ 
+"we check the proportion of them with control range covering between "+ covlo +" and "+ covhi +" of the true population. \n" +
+"This proportion is defined as the reliability value, which is "+ reliability + " here.";
 }
-
     </script>
 
 
@@ -44,7 +44,7 @@ document.getElementById("result").innerText = "Reliability = " + reliability;
               <table width="100%">
 
             <tr>
-            <td style="text-align: right">Sample Size (below 1000):</td>
+            <td style="text-align: right">Sample Size (such as 100):</td>
             <td><input name="dat1" type="number" </td>
             </tr>
 
@@ -71,14 +71,17 @@ document.getElementById("result").innerText = "Reliability = " + reliability;
 <tr><td></td><td style="text-align: left"><input onclick="getr()" type="button" value="Calculate" ></td></tr>
                           </table>
 
-<p style="text-align: center"> <span id="result"   > </span></p>
+<p style="text-align: center;"> <span style="color:blue; font-size:17px"  id="result" > </span></p>
             </div>
           </form>
 
 
 
-
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+<a href="https://usp1210.github.io/"> Home </a>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
 
 
     </body> </html>
+
  
