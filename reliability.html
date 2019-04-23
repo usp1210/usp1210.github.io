@@ -25,7 +25,7 @@ if(cov[i]<=covhi && cov[i]>=covlo) reliability=reliability+1
 reliability=Math.round(reliability)/nRuns;
 
 document.getElementById("result").innerText = 
-"Assuming the population is Normally distributed, and the sample is a random sample. \n"+
+"The following simulations assume that the population is Normally distributed, and the sample is a random sample. \n"+
 "For a sample size of " + N + ", we use [(sample mean) +/- "+ k +" * (sample st dev)] as the control range. \n"+
 "For each individual sample (1 simulation), we check whether the calculated control range covers \n"+
 "between "+ covlo +" and "+ covhi +" of the true population. After performing "+ nRuns +" simulations, \n"+ 
