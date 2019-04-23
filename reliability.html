@@ -16,7 +16,7 @@
 var z = new Array();
 for (var i=0; i<=N-1; i++) {        z[i]=  jStat.randn(0,1);              }
 var sampmean=jStat.mean(z);
-var sampsd=jStat.stdev(z);
+var sampsd=jStat.stdev(z,true);
 var lolimit=sampmean-k*sampsd;
 var hilimit=sampmean+k*sampsd;
 cov[i]=jStat.normal.cdf(hilimit,0,1)-jStat.normal.cdf(lolimit,0,1);
