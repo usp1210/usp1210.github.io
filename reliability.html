@@ -28,7 +28,36 @@
            }
          reliability=Math.round(reliability)/nRuns;
          
-         document.getElementById("result").innerText = 
+                      
+var error1="";
+var error2="";
+var error3="";
+var error4="";
+var error5="";
+var error6="";
+var witherror=0;
+
+if (N<2)   error1="Error type 1. Sample size should be an integer larger than 2 \n";
+if (k<=0)   error2="Error type 2. K value should be positive, usually 2 or 3 \n";
+if (covlo<0 || covlo>1)   error3="Error type 3. lower proximity limit should be between 0 and 1 \n"; 
+if (covhi<0 || covhi>1)   error4="Error type 4. upper proximity limit should be between 0 and 1 \n"; 
+if (covlo>=0 && covlo<=1 && covhi>=0 && covhi<=1 && covlo>=covhi) 
+error5="Error type 5. lower proximity should be a smaller value than upper proximity value \n";
+if  (nRuns<1) error6="Error type 6. the number of simulations should be a positive integer, ideally at least 10000 \n";
+ 
+
+if (N<2)    witherror=1;
+if (k<=0)   witherror=1;
+if (covlo<0 || covlo>1)  witherror=1;
+if (covhi<0 || covhi>1)  witherror=1;
+if (covlo>=0 && covlo<=1 && covhi>=0 && covhi<=1 && covlo>=covhi) witherror=1;
+if (nRuns<1) witherror=1;
+
+if (witherror=1)
+document.getElementById("result").innerText=error1+error2+error3+error4+error5+error6;
+
+if (witherror=0)
+document.getElementById("result").innerText = 
          "For a sample size of " + N + ", we define the control range as below: \n\n [(sample mean) +/- "+ k +" * (sample standard deviation)] \n\n "+
          "The following simulations assume that the population is normally distributed, and the sample is a random sample. "+
          "For each individual sample (1 simulation), we check whether the calculated control range covers "+
