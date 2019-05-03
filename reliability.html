@@ -9,7 +9,7 @@
       <script type="text/javascript">
          function getr()
                   {
-              var N = parseFloat(document.calcit.dat1.value);
+              var N = Math.floor(parseFloat(document.calcit.dat1.value));
               var k = parseFloat(document.calcit.dat2.value);
               var covlo = parseFloat(document.calcit.dat3.value);
               var covhi = parseFloat(document.calcit.dat4.value);
@@ -53,17 +53,16 @@ if (covhi<0 || covhi>1)  witherror=1;
 if (covlo>=0 && covlo<=1 && covhi>=0 && covhi<=1 && covlo>=covhi) witherror=1;
 if (nRuns<1) witherror=1;
 
-if (witherror=1)
-document.getElementById("result").innerText=error1+error2+error3+error4+error5+error6;
-
-if (witherror=0)
-document.getElementById("result").innerText = 
+if (witherror=1) finaloutput=error1+error2+error3+error4+error5+error6;
+if (witherror=0) finaloutput= 
          "For a sample size of " + N + ", we define the control range as below: \n\n [(sample mean) +/- "+ k +" * (sample standard deviation)] \n\n "+
          "The following simulations assume that the population is normally distributed, and the sample is a random sample. "+
          "For each individual sample (1 simulation), we check whether the calculated control range covers "+
          "between "+ covlo +" and "+ covhi +" of the true population. After performing "+ nRuns +" simulations, "+ 
          "we check the proportion of them with control range covering between "+ covlo +" and "+ covhi +" of the true population. " +
          "This proportion is defined as the reliability value, which is "+ reliability + " here.";
+                      
+ document.getElementById("result").innerText=finaloutput;
          }
            
       </script>
