@@ -62,7 +62,7 @@ if (nRuns<1) witherror=1;
          "we check the proportion of them with control range covering between "+ covlo +" and "+ covhi +" of the true population. " +
          "This proportion is defined as the reliability value, which is "+ reliability + " here.";
           
-                  if (witherror=1) finaloutput=error1+error2+error3+error4+error5+error6;
+                  if (witherror=1) {finaloutput=error1+error2+error3+error4+error5+error6;}
                       
  document.getElementById("result").innerText=finaloutput;
          }
