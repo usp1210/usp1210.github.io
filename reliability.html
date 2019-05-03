@@ -53,18 +53,21 @@ if (covhi<0 || covhi>1)  witherror=1;
 if (covlo>=0 && covlo<=1 && covhi>=0 && covhi<=1 && covlo>=covhi) witherror=1;
 if (nRuns<1) witherror=1;
 
-
- finaloutput= 
+if (witherror=0) {
+  document.getElementById("result").innerText= 
          "For a sample size of " + N + ", we define the control range as below: \n\n [(sample mean) +/- "+ k +" * (sample standard deviation)] \n\n "+
          "The following simulations assume that the population is normally distributed, and the sample is a random sample. "+
          "For each individual sample (1 simulation), we check whether the calculated control range covers "+
          "between "+ covlo +" and "+ covhi +" of the true population. After performing "+ nRuns +" simulations, "+ 
          "we check the proportion of them with control range covering between "+ covlo +" and "+ covhi +" of the true population. " +
          "This proportion is defined as the reliability value, which is "+ reliability + " here.";
-          
-                  if (witherror=1) {finaloutput=error1+error2+error3+error4+error5+error6;}
-                      
- document.getElementById("result").innerText=finaloutput;
+    document.getElementById("error").innerText="";} 
+    
+                     
+ if (witherror=1) {
+  document.getElementById("result").innerText="";
+  document.getElementById("error").innerText=error1+error2+error3+error4+error5+error6;} 
+                   
          }
            
       </script>
@@ -105,6 +108,8 @@ if (nRuns<1) witherror=1;
                      </tr>
                   </table>
                   <p style="text-align: center;"> <span style="color:blue; font-size:17px"  id="result" > </span></p>
+                   <p style="text-align: center;"> <span style="color:red; font-size:7.7px"  id="error" > </span></p>
+       
             </div>
             </form>
 
