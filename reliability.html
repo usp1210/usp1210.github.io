@@ -52,8 +52,11 @@ if (covlo<0 || covlo>1)  witherror=1;
 if (covhi<0 || covhi>1)  witherror=1;
 if (covlo>=0 && covlo<=1 && covhi>=0 && covhi<=1 && covlo>=covhi) witherror=1;
 if (nRuns<1) witherror=1;
-
-if (witherror=0) {
+ if (witherror=1) {
+  document.getElementById("result").innerText="";
+  document.getElementById("error").innerText=error1+error2+error3+error4+error5+error6;} 
+                   
+ 
   document.getElementById("result").innerText= 
          "For a sample size of " + N + ", we define the control range as below: \n\n [(sample mean) +/- "+ k +" * (sample standard deviation)] \n\n "+
          "The following simulations assume that the population is normally distributed, and the sample is a random sample. "+
@@ -61,13 +64,7 @@ if (witherror=0) {
          "between "+ covlo +" and "+ covhi +" of the true population. After performing "+ nRuns +" simulations, "+ 
          "we check the proportion of them with control range covering between "+ covlo +" and "+ covhi +" of the true population. " +
          "This proportion is defined as the reliability value, which is "+ reliability + " here.";
-    document.getElementById("error").innerText="";} 
     
-                     
- if (witherror=1) {
-  document.getElementById("result").innerText="";
-  document.getElementById("error").innerText=error1+error2+error3+error4+error5+error6;} 
-                   
          }
            
       </script>
