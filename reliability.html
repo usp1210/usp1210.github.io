@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="stylesheet" type="text/css" href="grid12.css">
       <link rel="stylesheet" type="text/css" href="lite.css">
       <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
@@ -29,42 +29,56 @@
          reliability=Math.round(reliability)/nRuns;
          
                       
-var error1="";
-var error2="";
-var error3="";
-var error4="";
-var error5="";
-var error6="";
-var witherror=0;
-
-if (N<2)   error1="Error type 1. Sample size should be an integer larger than 2 \n";
-if (k<=0)   error2="Error type 2. K value should be positive, usually 2 or 3 \n";
-if (covlo<0 || covlo>1)   error3="Error type 3. lower proximity limit should be between 0 and 1 \n"; 
-if (covhi<0 || covhi>1)   error4="Error type 4. upper proximity limit should be between 0 and 1 \n"; 
-if (covlo>=0 && covlo<=1 && covhi>=0 && covhi<=1 && covlo>=covhi) 
-error5="Error type 5. lower proximity should be a smaller value than upper proximity value \n";
-if  (nRuns<1) error6="Error type 6. the number of simulations should be a positive integer, ideally at least 10000 \n";
- 
-
-if (N<2)    witherror=1;
-if (k<=0)   witherror=1;
-if (covlo<0 || covlo>1)  witherror=1;
-if (covhi<0 || covhi>1)  witherror=1;
-if (covlo>=0 && covlo<=1 && covhi>=0 && covhi<=1 && covlo>=covhi) witherror=1;
-if (nRuns<1) witherror=1;
- if (witherror=1) {
-  document.getElementById("result").innerText="";
-  document.getElementById("error").innerText=error1+error2+error3+error4+error5+error6;} 
-                   
- 
-  document.getElementById("result").innerText= 
-         "For a sample size of " + N + ", we define the control range as below: \n\n [(sample mean) +/- "+ k +" * (sample standard deviation)] \n\n "+
-         "The following simulations assume that the population is normally distributed, and the sample is a random sample. "+
+         var error1="";
+         var error2="";
+         var error3="";
+         var error4="";
+         var error5="";
+         var error6="";
+         
+         var check1=0;
+         var check2=0;
+         var check3=0;
+         var check4=0;
+         var check5=0;
+         var check6=0;
+         
+         var witherror=0;
+         
+         
+         if (N>=2 && N<=2000)              check1=1;
+         if (k>=1 && k<=4)                 check2=1;
+         if (covlo>=0 && covlo<=1)         check3=1;
+         if (covhi>=0 && covhi<=1)         check4=1;
+         if (covlo>=0 && covlo<=1 && covhi>=0 && covhi<=1 && covlo<covhi) check5=1;
+         if (nRuns>=100 && nRuns<=1000000) check6=1;
+         
+         if (check1<1)   error1="Error-code 1. Sample size should be an integer between 2 and 2000. \n";
+         if (check2<1)   error2="Error-code 2. K value should be between 1 and 4, usually 2 or 3. \n";
+         if (check3<1)   error3="Error-code 3. lower proximity limit should be between 0 and 1. \n"; 
+         if (check4<1)   error4="Error-code 4. upper proximity limit should be between 0 and 1. \n"; 
+         if (check5<1)   error5="Error-code 5. lower proximity should be smaller than upper proximity value. \n";
+         if (check6<1)   error6="Error-code 6. the number of simulations should be between 100 and 1000000, usually at least 10000. \n";
+         
+         if (check1<1 || check2<1 || check3<1 || check4<1 || check5<1 || check6<1) witherror=1;
+         
+         var warningtext="";
+         var displayresult="The reliability is "+ reliability + " based on " + nRuns +" simulations.\n\n"+
+         "For a sample size of " + N + ", we define the control range as below: \n [(sample mean) +/- "+ k 
+         +" * (sample standard deviation)] \n "+
+         "The simulations assume that the population is normally distributed, and the sample is a random sample. "+
          "For each individual sample (1 simulation), we check whether the calculated control range covers "+
          "between "+ covlo +" and "+ covhi +" of the true population. After performing "+ nRuns +" simulations, "+ 
          "we check the proportion of them with control range covering between "+ covlo +" and "+ covhi +" of the true population. " +
-         "This proportion is defined as the reliability value, which is "+ reliability + " here.";
-    
+         "This proportion is defined as the above reliability value.\n\n\n";
+         
+         if (witherror>0.5) {
+         displayresult="";
+         warningtext=error1+error2+error3+error4+error5+error6;} 
+         
+         document.getElementById("result").innerText= displayresult;
+         document.getElementById("error").innerText=  warningtext ;   
+         
          }
            
       </script>
@@ -74,29 +88,28 @@ if (nRuns<1) witherror=1;
          <div class="row">
             <div class="col-lg-2 col-md-2 col-sm-2">
             </div>
-            
             <div class="col-lg-7 col-md-7 col-sm-7">
                <form name="calcit" onkeypress="return event.keyCode != 13;">
                   <h1 style="text-align: center"> Reliability Calculator </h1>
                   <table width="100%">
                      <tr>
-                        <td style="text-align: right">Sample Size (such as 100):</td>
+                        <td style="text-align: right">Sample Size </td>
                         <td><input name="dat1" type="number" </td>
                      </tr>
                      <tr>
-                        <td style="text-align: right">K (2 or 3):</td>
+                        <td style="text-align: right">K </td>
                         <td><input name="dat2" type="number"  </td>
                      </tr>
                      <tr>
-                        <td style="text-align: right">Lower Proximity Limit (such as 0.94):</td>
+                        <td style="text-align: right">Lower Proximity Limit </td>
                         <td><input name="dat3" type="number"  </td>
                      </tr>
                      <tr>
-                        <td style="text-align: right">Higher Proximity Limit (such as 0.96):</td>
+                        <td style="text-align: right">Higher Proximity Limit </td>
                         <td><input name="dat4" type="number"  </td>
                      </tr>
                      <tr>
-                        <td style="text-align: right">Number of Simulations (10000 or more):</td>
+                        <td style="text-align: right">Number of Simulations </td>
                         <td><input name="dat5" type="number"  </td>
                      </tr>
                      <tr>
@@ -104,25 +117,25 @@ if (nRuns<1) witherror=1;
                         <td style="text-align: left"><input onclick="getr()" type="button" value="Calculate" ></td>
                      </tr>
                   </table>
-                  <p style="text-align: center;"> <span style="color:red; font-size:7.7px"  id="error" > </span></p>
-                  <p style="text-align: center;"> <span style="color:blue; font-size:17px"  id="result" > </span></p>
-
-       
             </div>
             </form>
-
          </div>
          <div class="col-lg-3 col-md-3 col-sm-3">        
          </div>
       </div>
-      
-               <div class="row"><div class="col-lg-2 col-md-2 col-sm-2"></div>
-                  <div class="col-lg-7 col-md-7 col-sm-7"><ul>                     
-               <li><a href="https://usp1210.github.io"> Home </a></li> 
-               <li><a href="https://usp1210.github.io/reliability100.pdf"> Charts100 </a></li> 
-               <li><a href="https://usp1210.github.io/reliability300.pdf"> Charts300 </a></li> 
-               </ul></div><div class="col-lg-3 col-md-3 col-sm-3"></div></div>
-      
+      <div class="row">
+         <div class="col-lg-3 col-md-3 col-sm-3"></div>
+         <div class="col-lg-5 col-md-5 col-sm-5">
+            <ul>
+               <p style="text-align: center;"> <span style="color:red; font-size:9.7px"  id="error" > </span></p>
+               <p style="text-align: center;"> <span style="color:blue; font-size:13.7px"  id="result" > </span></p>
+               <li><a href="https://usp1210.github.io/EXAMPLE.PNG"> EXAMPLE </a></li>
+               <li><a href="https://usp1210.github.io/reliability100.pdf"> Charts100 </a></li>
+               <li><a href="https://usp1210.github.io/reliability300.pdf"> Charts300 </a></li>
+            </ul>
+         </div>
+         <div class="col-lg-4 col-md-4 col-sm-4"></div>
+      </div>
       </div>
    </body>
 </html>
