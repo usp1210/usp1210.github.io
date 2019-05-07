@@ -14,6 +14,10 @@
               var covlo = parseFloat(document.calcit.dat3.value);
               var covhi = parseFloat(document.calcit.dat4.value);
               var nRuns = parseFloat(document.calcit.dat5.value);
+         
+         var covlo100=covlo*100;
+         var covhi100=covhi*100;
+         
            var cov=new Array();
            var reliability=0;
            for (iRun=1; iRun<=nRuns; iRun++) {
@@ -26,7 +30,7 @@
          cov[i]=jStat.normal.cdf(hilimit,0,1)-jStat.normal.cdf(lolimit,0,1);
          if(cov[i]<=covhi && cov[i]>=covlo) reliability=reliability+1
            }
-         reliability=Math.round(reliability)/nRuns;
+         reliability=Math.round(reliability*100)/nRuns;
          
                       
          var error1="";
@@ -63,13 +67,13 @@
          if (check1<1 || check2<1 || check3<1 || check4<1 || check5<1 || check6<1) witherror=1;
          
          var warningtext="";
-         var displayresult="The reliability is "+ reliability + " based on " + nRuns +" simulations.\n\n"+
+         var displayresult="The reliability is "+ reliability + "% based on " + nRuns +" simulations.\n\n"+
          "For a sample size of " + N + ", we define the control range as below: \n [(sample mean) +/- "+ k 
          +" * (sample standard deviation)] \n "+
          "The simulations assume that the population is normally distributed, and the sample is a random sample. "+
          "For each individual sample (1 simulation), we check whether the calculated control range covers "+
-         "between "+ covlo +" and "+ covhi +" of the true population. After performing "+ nRuns +" simulations, "+ 
-         "we check the proportion of them with control range covering between "+ covlo +" and "+ covhi +" of the true population. " +
+         "between "+ covlo100 +"% and "+ covhi100 +"% of the true population. After performing "+ nRuns +" simulations, "+ 
+         "we check the proportion of them with control range covering between "+ covlo100 +"% and "+ covhi100 +"% of the true population. " +
          "This proportion is defined as the above reliability value.\n\n\n";
          
          if (witherror>0.5) {
@@ -129,7 +133,7 @@
             <ul>
                <p style="text-align: center;"> <span style="color:red; font-size:9.7px"  id="error" > </span></p>
                <p style="text-align: center;"> <span style="color:blue; font-size:13.7px"  id="result" > </span></p>
-               <li><a href="https://usp1210.github.io/EXAMPLE.PNG"> EXAMPLE </a></li>
+               <li><a href="https://usp1210.github.io/EXAMPLE.png"> EXAMPLE </a></li>
                <li><a href="https://usp1210.github.io/reliability100.pdf"> Charts100 </a></li>
                <li><a href="https://usp1210.github.io/reliability300.pdf"> Charts300 </a></li>
             </ul>
