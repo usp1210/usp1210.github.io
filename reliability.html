@@ -10,7 +10,7 @@
          function getr()
                   {
               var N = Math.floor(parseFloat(document.calcit.dat1.value));
-              var k = parseFloat(document.calcit.dat2.value);
+              var k = parseFloat(document.querySelector('input[name="dat2"]:checked').value);
               var covlo = parseFloat(document.calcit.dat3.value);
               var covhi = parseFloat(document.calcit.dat4.value);
               var nRuns = parseFloat(document.calcit.dat5.value);
@@ -58,18 +58,18 @@
          if (nRuns>=100 && nRuns<=1000000) check6=1;
          
          if (check1<1)   error1="Error-code 1. Sample size should be an integer between 2 and 2000. \n";
-         if (check2<1)   error2="Error-code 2. K value should be between 1 and 4, usually 2 or 3. \n";
-         if (check3<1)   error3="Error-code 3. Lower proximity limit should be between 0 and 1. \n"; 
-         if (check4<1)   error4="Error-code 4. Higher proximity limit should be between 0 and 1. \n"; 
-         if (check5<1)   error5="Error-code 5. Lower proximity should be smaller than higher proximity value. \n";
-         if (check6<1)   error6="Error-code 6. The number of simulations should be between 100 and 1000000, usually at least 10000. \n";
+         if (check2<1)   error2="Error-code 0. K value should be between 1 and 4, usually 2 or 3. \n";
+         if (check3<1)   error3="Error-code 2. Lower proximity limit should be between 0 and 1. \n"; 
+         if (check4<1)   error4="Error-code 3. Higher proximity limit should be between 0 and 1. \n"; 
+         if (check5<1)   error5="Error-code 4. Lower proximity should be smaller than higher proximity value. \n";
+         if (check6<1)   error6="Error-code 5. The number of simulations should be between 100 and 1000000, usually at least 10000. \n";
          
          if (check1<1 || check2<1 || check3<1 || check4<1 || check5<1 || check6<1) witherror=1;
          
          var warningtext="";
-         var displayresult="The reliability is "+ reliability + "% based on " + nRuns +" simulations.\n\n"+
-         "For a sample size of " + N + ", we define the control range as below: \n [(sample mean) +/- "+ k 
-         +" * (sample standard deviation)] \n "+
+         var displayresult="The reliability is "+ reliability + "% based on " + nRuns +" simulations. "+
+         "For a sample size of " + N + ", we define the control range as [mean &#177; "+ k 
+         +"SD]. "+
          "The simulations assume that the population is normally distributed, and the sample is a random sample. "+
          "For each individual sample (1 simulation), we check whether the calculated control range covers "+
          "between "+ covlo100 +"% and "+ covhi100 +"% of the true population. After performing "+ nRuns +" simulations, "+ 
@@ -80,7 +80,7 @@
          displayresult="";
          warningtext=error1+error2+error3+error4+error5+error6;} 
          
-         document.getElementById("result").innerText= displayresult;
+         document.getElementById("result").innerHTML= displayresult;
          document.getElementById("error").innerText=  warningtext ;   
          
          }
@@ -101,8 +101,12 @@
                         <td><input name="dat1" type="number" </td>
                      </tr>
                      <tr>
-                        <td style="text-align: right">K </td>
-                        <td><input name="dat2" type="number"  </td>
+                        <td style="text-align: right;"> Control Range </td>
+                        <td>
+                           <input type="radio" name="dat2" class="example_class"  value="2" checked> mean &#177; 2SD <br>
+                           <input type="radio" name="dat2" class="example_class"  value="2.5" > mean &#177; 2.5SD <br>
+                           <input type="radio" name="dat2" class="example_class"  value="3" > mean &#177; 3SD <br>
+                        </td>
                      </tr>
                      <tr>
                         <td style="text-align: right">Lower Proximity Limit </td>
@@ -114,7 +118,7 @@
                      </tr>
                      <tr>
                         <td style="text-align: right">Number of Simulations </td>
-                        <td><input name="dat5" type="number"  </td>
+                        <td><input name="dat5" type="number" value="10000" </td>
                      </tr>
                      <tr>
                         <td></td>
@@ -133,7 +137,7 @@
             <ul>
                <p style="text-align: center;"> <span style="color:red; font-size:9.7px"  id="error" > </span></p>
                <p style="text-align: center;"> <span style="color:blue; font-size:13.7px"  id="result" > </span></p>
-               <li><a href="https://usp1210.github.io/EXAMPLE.png"> EXAMPLE </a></li>
+               <li><a href="https://usp1210.github.io/EXAMPLE.PNG"> EXAMPLE </a></li>
                <li><a href="https://usp1210.github.io/reliability100.pdf"> Charts100 </a></li>
                <li><a href="https://usp1210.github.io/reliability300.pdf"> Charts300 </a></li>
             </ul>
